@@ -43,6 +43,7 @@
     <script src="util/placementworker.js"></script>
     <script src="svgparser.js"></script>
     <script src="svgnest.js"></script>
+    <script src="util/sendLog.js"></script>
 
     <script src="util/filesaver.js"></script>
 
@@ -149,7 +150,7 @@
         var isworking = false;
 
         reset.onclick = function () {
-          window.location.href = "/";
+          window.location.href = "/nester/";
         };
 
         confirmBin.onclick = function () {
@@ -178,6 +179,9 @@
         };
 
         start.onclick = function () {
+          sendLogToTeddify({
+            event: "start",
+          });
           if (this.className == "button start disabled") {
             return false;
           }
@@ -282,6 +286,9 @@
         }
 
         download.onclick = function () {
+          sendLogToTeddify({
+            event: "download",
+          });
           if (download.className == "button download disabled") {
             return false;
           }
@@ -613,7 +620,6 @@
             <div class="progress">
               <div class="progress_inner" id="info_progress"></div>
             </div>
-            <span class="subscript">진행도</span>
 
             <div id="info_placement" style="display: none">
               <div class="column left">
