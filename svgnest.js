@@ -624,21 +624,34 @@
 
                 var placedArea = 0;
                 var totalArea = 0;
+                let minX = Infinity;
+                let maxX = -Infinity;
+                let binHeight =
+                  GeometryUtil.getPolygonBounds(binPolygon).height;
                 var numParts = placelist.length;
                 var numPlacedParts = 0;
 
                 for (i = 0; i < best.placements.length; i++) {
-                  totalArea += Math.abs(GeometryUtil.polygonArea(binPolygon));
                   for (var j = 0; j < best.placements[i].length; j++) {
+                    const boundary = GeometryUtil.getPolygonBounds(
+                      tree[best.placements[i][j].id]
+                    );
+                    const newMinX = boundary.x + best.placements[i][j].x;
+                    const newMaxX =
+                      boundary.x + boundary.width + best.placements[i][j].x;
+                    minX = Math.min(minX, newMinX);
+                    maxX = Math.max(maxX, newMaxX);
                     placedArea += Math.abs(
                       GeometryUtil.polygonArea(tree[best.placements[i][j].id])
                     );
                     numPlacedParts++;
                   }
                 }
+                totalArea = binHeight * (maxX - minX);
                 displayCallback(
                   self.applyPlacement(best.placements),
-                  placedArea / best.area,
+                  placedArea / totalArea,
+                  maxX - minX,
                   numPlacedParts,
                   numParts
                 );

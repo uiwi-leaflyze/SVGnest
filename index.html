@@ -139,10 +139,12 @@
 
           let config = {};
           let margin = parseFloat(marginInput.value);
+          console.log(margin);
           if (!isNaN(margin)) {
             config.spacing = margin;
           }
           window.SvgNest.config(config);
+          console.log(window.SvgNest.config());
 
           if (isworking) {
             stopnest();
@@ -200,6 +202,7 @@
             SvgNest.stop();
             start.className = "button start";
             isWorking = false;
+            progress(1);
           }
           SvgNest.start(progress, tmpCallback);
           start.className = "button spinner";
@@ -488,7 +491,7 @@
 
         var iterations = 0;
 
-        function renderSvg(svglist, efficiency, placed, total) {
+        function renderSvg(svglist, efficiency, usedLength, placed, total) {
           iterations++;
 
           if (!svglist || svglist.length == 0) {
@@ -505,14 +508,22 @@
           }
 
           if (efficiency || efficiency === 0) {
-            document.getElementById("info_efficiency").innerHTML = Math.round(
+            document.getElementById("info_efficiency").innerHTML = `효율: ${Math.round(
               efficiency * 100
-            );
+            )}%`;
+            document.getElementById(
+              "info_used_length"
+            ).innerHTML = `사용 길이(가로): ${usedLength}mm`;
+            document
+              .getElementById("info_efficiency")
+              .setAttribute("style", "display: block");
+            document
+              .getElementById("info_used_length")
+              .setAttribute("style", "display: block");
+            document
+              .getElementById("info_placement")
+              .setAttribute("style", "display: block");
           }
-
-          document.getElementById("info_placed").innerHTML =
-            placed + "/" + total;
-
           display.setAttribute("style", "display: none");
           download.className = "button download animated bounce";
         }
@@ -602,20 +613,15 @@
             <div class="progress">
               <div class="progress_inner" id="info_progress"></div>
             </div>
-
-            <div id="info_placement" style="display: none">
+            <div id="info_placement">
               <div class="column left">
                 <h1 class="label">
-                  <span id="info_efficiency"></span><sup>%</sup>
-                </h1>
-                <span class="subscript">Material Utilization</span>
+                  <span id="info_efficiency"></span>
               </div>
-
               <div class="column left">
                 <h1 class="label">
-                  <span id="info_placed"></span>
+                  <span id="info_used_length"></span>
                 </h1>
-                <span class="subscript">Parts placed</span>
               </div>
             </div>
           </div>
