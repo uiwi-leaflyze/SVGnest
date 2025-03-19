@@ -193,13 +193,6 @@ li {
   margin: 40px auto auto auto;
 }
 
-#svgnest .logo,
-#svgnest .sidebar {
-  float: left;
-  width: 22%;
-  margin-right: 8%;
-}
-
 #svgnest .sidebar h1 {
   font-size: 3em;
 }
@@ -207,7 +200,8 @@ li {
 #svgnest .sidebar {
   clear: both;
   width: 100%;
-  margin-top: 3em;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* info sidebar */
