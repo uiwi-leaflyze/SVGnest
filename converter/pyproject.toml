@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "converter"
+version = "0.1.0"
+description = ""
+authors = ["uiwi <qwaqwa93@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.1.0"
+svgpathtools = "^1.6.1"
+ezdxf = "^1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

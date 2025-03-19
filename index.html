@@ -57,35 +57,6 @@
         }
       }
 
-      function getSVGWidth(svgString) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(svgString, "image/svg+xml");
-        const svg = doc.documentElement;
-
-        let minX = Infinity,
-          maxX = -Infinity;
-
-        const elements = svg.querySelectorAll(
-          "polygon, path, rect, circle, line, ellipse"
-        );
-
-        elements.forEach((el) => {
-          let bbox = null;
-
-          try {
-            bbox = el.getBBox();
-          } catch (e) {
-            console.warn("Bounding box error for element:", el, e);
-          }
-
-          if (bbox) {
-            minX = Math.min(minX, bbox.x);
-            maxX = Math.max(maxX, bbox.x + bbox.width);
-          }
-        });
-
-        return maxX - minX;
-      }
       ready(function () {
         var demo = document.getElementById("demo");
         var upload = document.getElementById("upload");
@@ -285,7 +256,7 @@
           handleFile(e.dataTransfer.files[0]);
         }
 
-        download.onclick = function () {
+        download.onclick = async function () {
           sendLogToTeddify({
             event: "download",
           });
@@ -344,7 +315,17 @@
           var blob = new Blob([output], {
             type: "image/svg+xml;charset=utf-8",
           });
-          saveAs(blob, "SVGnest-output.svg");
+
+          var formData = new FormData();
+          formData.append("fileUpload", blob);
+
+          const response = await fetch("/api2/convert", {
+            method: "POST",
+            body: formData,
+          });
+          const dxf = await response.text();
+          const dxfFile = new Blob([dxf], { type: "application/dxf" });
+          saveAs(dxfFile, "output.dxf");
         };
 
         var zoomlevel = 1.0;
@@ -404,7 +385,7 @@
           handleFile(e.target.files[0]);
         };
 
-        function handleFile(file) {
+        async function handleFile(file) {
           if (!file) {
             return;
           }
@@ -413,6 +394,7 @@
             !file.type ||
             (file.type.search("svg") < 0 &&
               file.type.search("xml") < 0 &&
+              file.type.search("dxf") < 0 &&
               file.type.search("text") < 0)
           ) {
             return;

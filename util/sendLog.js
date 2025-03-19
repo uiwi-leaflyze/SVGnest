@@ -4,7 +4,7 @@ function sendLog(logData, url) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(logData),
+    body: JSON.stringify({ message: logData }),
   })
     .then((response) => response.json())
     .then((data) => console.log("Log sent", data))
@@ -12,5 +12,5 @@ function sendLog(logData, url) {
 }
 
 function sendLogToTeddify(logData) {
-  sendLog(logData, "https://teddify.co/api/nesterlog");
+  sendLog(logData, "/api2/log");
 }
