@@ -513,7 +513,7 @@
             )}%`;
             document.getElementById(
               "info_used_length"
-            ).innerHTML = `사용 길이(가로): ${usedLength}mm`;
+            ).innerHTML = `사용 길이(가로): ${usedLength.toFixed(2)}mm`;
             document
               .getElementById("info_efficiency")
               .setAttribute("style", "display: block");
@@ -584,11 +584,11 @@
           <div class="newconfig">
             <div>
               <label>가로: </label>
-              <input type="text" value="900" id="widthInput" />mm
+              <input type="text" value="1300" id="widthInput" />mm
             </div>
             <div>
               <label>세로: </label>
-              <input type="text" value="600" id="heightInput" />mm
+              <input type="text" value="1300" id="heightInput" />mm
             </div>
             <div>
               <label>간격: </label>
@@ -643,8 +643,8 @@
           >
             <rect
               id="bin"
-              width="900"
-              height="600"
+              width="1300"
+              height="1300"
               fill="none"
               stroke="#010101"
             />
