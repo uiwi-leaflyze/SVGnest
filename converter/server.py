@@ -1,3 +1,4 @@
+import logging
 import os
 
 import ezdxf
@@ -12,6 +13,11 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 
+logging.basicConfig(
+    filename="server.log", level=logging.INFO, format="%(asctime)s - %(message)s"
+)
+
+
 @app.route("/api2/hello", methods=["GET"])
 def hello():
     return {"message": "Hello, world!"}, 200
@@ -19,9 +25,13 @@ def hello():
 
 @app.route("/api2/log", methods=["POST"])
 def log():
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    client_ip = forwarded_for.split(",")[0] if forwarded_for else request.remote_addr
+
     data = request.get_json()
-    with open("log.txt", "a") as f:
-        f.write(str(data["message"]) + "\n")
+    message = data.get("message")
+    logging.info(f"{client_ip}: {message}")
+
     return {"message": "Logged"}, 200
 
 
